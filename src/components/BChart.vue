@@ -12,15 +12,20 @@
               :y="getY(point, index)"
               :width="getWidth(point, index)"
               :height="getHeight(point)"
-              fill="#F7941E"
+              fill="#ff5f00"
               opacity="0.6"/>
       </g>
 
+      <!--
       x1=right
       y1=height
-      x2=
+      x2=width
       y2=height
+      -->
       <line x1="10" y1="490" x2="490" y2="490" stroke="black" stroke-width="1"/>
+
+      <line x1="10" y1="10" x2="10" y2="490" stroke="black" stroke-width="1"/>
+
     </svg>
   </div>
 </div>
