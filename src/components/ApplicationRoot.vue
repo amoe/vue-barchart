@@ -49,7 +49,6 @@ export default Vue.extend({
             return scaleHeight(point.y);
         },
         getX(point, index) {
-            console.log("I was called with %o", index);
             return index * 10;
         },
          generatePoints() {
