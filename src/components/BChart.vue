@@ -24,9 +24,11 @@ import Vuex from 'vuex';
 import utility from '../utility';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
+import nouns from '../nouns';
 
 const height = 500;
 const scaleHeight = d3.scaleLinear().domain([0, 100]).range([0, 500]);
+const scaleX = d3.scaleBand()
 
 export default Vue.extend({
     data: function() {
@@ -48,22 +50,25 @@ export default Vue.extend({
             return height - scaleHeight(point.y);
         },
         generatePoints() {
-             this.points = [];   // This is fine and will update DOM
-
-             const nPoints = _.random(5, 50);
-             
-             // In the case of bar data, x just represents an unlabelled 
-             // 'category' so it's unused.
-             for (let i = 0; i < nPoints; i++) {
-                 const x = i;
-                 const y = _.random(0, 100);
-
-                 const thisPoint = {
-                     x: x, y: y
-                 };
-                 
-                 this.points.push(thisPoint);
+            const thisRun = _.shuffle(nouns);
+            this.points = [];   // This is fine and will update DOM
+            
+            const nPoints = _.random(5, 50);
+            
+            // In the case of bar data, x just represents an unlabelled 
+            // 'category' so it's unused.
+            for (let i = 0; i < nPoints; i++) {
+                const x = thisRun[i];
+                const y = _.random(0, 100);
+                
+                const thisPoint = {
+                    x: x, y: y
+                };
+                
+                this.points.push(thisPoint);
              }
+            
+            console.log("points list is now %o", JSON.stringify(this.points));
          },
          greet() {
              console.log("hello");
