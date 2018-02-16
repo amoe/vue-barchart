@@ -9,7 +9,7 @@
 
   <!-- <div v-axis="value"></div> -->
 
-  <b-chart :width="width" :height="height"></b-chart>
+  <b-chart :outer-width="width" :outer-height="height"></b-chart>
 </div>
 </template>
 

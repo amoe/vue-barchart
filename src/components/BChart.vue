@@ -43,19 +43,19 @@ const margin = {
 
 export default Vue.extend({
     props: {
-        'width': {
+        'outerWidth': {
             type: Number,
             required: true
         },
-        'height': {
+        'outerHeight': {
             type: Number,
             required: true
         },
     },
     data: function() {
         const dimensions = {
-            width: this.width - margin.left - margin.right,
-            height: this.height - margin.top - margin.bottom
+            width: this.outerWidth - margin.left - margin.right,
+            height: this.outerHeight - margin.top - margin.bottom
         };
 
         const heightScale = d3.scaleLinear().domain([0, 100]).range([0, dimensions.height]);
