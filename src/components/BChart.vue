@@ -14,18 +14,20 @@
               :height="getHeight(point)"
               fill="#ff5f00"
               opacity="0.6"/>
+
+      <line id="x-axis"
+            x1="0"
+            :y1="dimensions.height" 
+            :x2="dimensions.width"
+            :y2="dimensions.height"
+            stroke="black" stroke-width="1"/>
+
+      <line id="y-axis"
+            x1="0" y1="0"
+            x2="0" :y2="dimensions.height"
+            stroke="black" stroke-width="1"/>
+
       </g>
-
-      <!--
-      x1=right
-      y1=height
-      x2=width
-      y2=height
-      -->
-      <line x1="10" y1="490" x2="490" y2="490" stroke="black" stroke-width="1"/>
-
-      <line x1="10" y1="10" x2="10" y2="490" stroke="black" stroke-width="1"/>
-
     </svg>
   </div>
 </div>
@@ -71,7 +73,7 @@ export default Vue.extend({
             // so it needs to know what categories were used 'in practice'
             xScale: null,
             heightScale,
-            dimensions,
+            dimensions
         };
     },
     created() {
