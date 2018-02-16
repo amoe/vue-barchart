@@ -6,13 +6,19 @@
   <div class="svg-container">
     <svg version="1.1" viewBox="0 0 500 500" 
          preserveAspectRatio="xMinYMin meet" class="svg-content">
-      <rect v-for="(point, index) in points"
-            :x="getX(point, index)"
-            :y="getY(point, index)"
-            :width="getWidth(point, index)"
-            :height="getHeight(point)"
-            fill="#F7941E"
-            opacity="0.6"/>
+      <g :transform="marginTranslation">
+        <rect v-for="(point, index) in points"
+              :x="getX(point, index)"
+              :y="getY(point, index)"
+              :width="getWidth(point, index)"
+              :height="getHeight(point)"
+              fill="#F7941E"
+              opacity="0.6"/>
+      </g>
+
+      <!--
+      <line x1="10" y1="10" x2="50" y2="50" stroke="black" stroke-width="1"/>
+      -->
     </svg>
   </div>
 </div>
@@ -26,19 +32,43 @@ import * as _ from 'lodash';
 import * as d3 from 'd3';
 import nouns from '../nouns';
 
-const height = 500;
-const scaleHeight = d3.scaleLinear().domain([0, 100]).range([0, 500]);
+const margin = {
+    top: 10,
+    right: 10,
+    bottom: 10,
+    left: 10
+};
 
 export default Vue.extend({
+    props: {
+        'width': {
+            type: Number,
+            required: true
+        },
+        'height': {
+            type: Number,
+            required: true
+        },
+    },
     data: function() {
+        const dimensions = {
+            width: this.width - margin.left - margin.right,
+            height: this.height - margin.top - margin.bottom
+        };
+
+        const heightScale = d3.scaleLinear().domain([0, 100]).range([0, dimensions.height]);
+        
         return {
             points: [],
             // xscale must be reset sometimes because it's a band scale
             // so it needs to know what categories were used 'in practice'
-            xScale: null
+            xScale: null,
+            heightScale,
+            dimensions,
         };
     },
     created() {
+        console.log("margin translation expr is %o", this.marginTranslation);
         this.generatePoints();
     },
     methods: {
@@ -46,13 +76,13 @@ export default Vue.extend({
             return this.xScale.bandwidth();
         },
         getHeight(point) {
-            return scaleHeight(point.y);
+            return this.heightScale(point.y);
         },
         getX(point, index) {
             return this.xScale(point.x);
         },
         getY(point, index) {
-            return height - scaleHeight(point.y);
+            return this.dimensions.height - this.heightScale(point.y);
         },
         generatePoints() {
             const thisRun = _.shuffle(nouns);
@@ -94,6 +124,11 @@ export default Vue.extend({
          doIncrement() {
              this.$store.dispatch('increment');
          },
+     },
+     computed: {
+         marginTranslation() {
+             return `translate(${margin.left}, ${margin.top})`;
+         }
      }
  });
 </script>

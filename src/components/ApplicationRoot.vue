@@ -6,8 +6,10 @@
   <p>The value is: <code>{{count}}</code></p>
   <button v-on:click="greet">Greet</button>
   <button v-on:click="doIncrement">Inc</button>
-  
-  <b-chart></b-chart>
+
+  <!-- <div v-axis="value"></div> -->
+
+  <b-chart :width="width" :height="height"></b-chart>
 </div>
 </template>
 
@@ -18,9 +20,22 @@ import utility from '../utility';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import BChart from './BChart.vue';
+import directives from '../directives';
 
 export default Vue.extend({
     components: { BChart },
+    data: function() {
+        return {
+            value: 42,
+            // Because these are specified to be numbers, they must be declared
+            // inside data.
+            width: 500,
+            height: 500
+        };
+    },
+    directives: {
+        axis: directives.axis
+    },
     methods: {
          greet() {
              console.log("hello");
