@@ -7,10 +7,10 @@
     <svg version="1.1" viewBox="0 0 500 500" 
          preserveAspectRatio="xMinYMin meet" class="svg-content">
       <g :transform="marginTranslation">
-        <rect v-for="(point, index) in points"
-              :x="getX(point, index)"
-              :y="getY(point, index)"
-              :width="getWidth(point, index)"
+        <rect v-for="point in points"
+              :x="getX(point)"
+              :y="getY(point)"
+              :width="getWidth(point)"
               :height="getHeight(point)"
               fill="#ff5f00"
               opacity="0.6"/>
@@ -27,6 +27,10 @@
             x2="0" :y2="dimensions.height"
             stroke="black" stroke-width="1"/>
 
+      <!-- font settings are default settings taken from d3-axis -->
+      <text v-for="category in domain"
+        x="0" :y="dimensions.height" 
+        font-size="10" font-family="sans-serif">Hello out there</text>
       </g>
     </svg>
   </div>
@@ -81,16 +85,16 @@ export default Vue.extend({
         this.generatePoints();
     },
     methods: {
-        getWidth(point, index) {
+        getWidth(point) {
             return this.xScale.bandwidth();
         },
         getHeight(point) {
             return this.heightScale(point.y);
         },
-        getX(point, index) {
+        getX(point) {
             return this.xScale(point.x);
         },
-        getY(point, index) {
+        getY(point) {
             return this.dimensions.height - this.heightScale(point.y);
         },
         generatePoints() {
@@ -114,9 +118,7 @@ export default Vue.extend({
                 this.points.push(thisPoint);
              }
             
-            console.log("points list is now %o", JSON.stringify(this.points));
-
-            this.resetBandScale(usedCategories);
+            this.resetBandScale(this.domain);
          },
 
         resetBandScale(categories) {
@@ -125,6 +127,11 @@ export default Vue.extend({
               .range([0, this.dimensions.width])
               .paddingInner(0.1)
               .align(0.5);
+
+            console.log("band scale is %o", this.xScale);
+
+            // When scale has no ticks, the ticks are just the domain.  (because ordinal scale.)
+            console.log("ticks value is %o", this.domain);
         },
          greet() {
              console.log("hello");
@@ -135,6 +142,9 @@ export default Vue.extend({
          },
      },
      computed: {
+         domain() {
+             return this.points.map(point => point.x);
+         },
          marginTranslation() {
              return `translate(${margin.left}, ${margin.top})`;
          }
