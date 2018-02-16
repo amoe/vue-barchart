@@ -13,10 +13,10 @@
     <svg version="1.1" viewBox="0 0 500 500" 
          preserveAspectRatio="xMinYMin meet" class="svg-content">
       <rect v-for="(point, index) in points"
-            :x="getY(point, index)"
+            :x="getX(point, index)"
             y="10"
             width="5"
-            height="10"
+            :height="getHeight(point)"
             fill="#F7941E"
             opacity="0.6"/>
     </svg>
@@ -29,7 +29,9 @@
 import Vuex from 'vuex';
 import utility from '../utility';
 import * as _ from 'lodash';
+import * as d3 from 'd3';
 
+const scaleHeight = d3.scaleLinear().domain([0, 100]).range([0, 500]);
 
 export default Vue.extend({
     components: {
@@ -43,7 +45,10 @@ export default Vue.extend({
         this.generatePoints();
     },
     methods: {
-        getY(point, index) {
+        getHeight(point) {
+            return scaleHeight(point.y);
+        },
+        getX(point, index) {
             console.log("I was called with %o", index);
             return index * 10;
         },
@@ -52,8 +57,10 @@ export default Vue.extend({
 
              const nPoints = _.random(5, 50);
              
+             // In the case of bar data, x just represents an unlabelled 
+             // 'category' so it's unused.
              for (let i = 0; i < nPoints; i++) {
-                 const x = _.random(0, 100);
+                 const x = i;
                  const y = _.random(0, 100);
 
                  const thisPoint = {
