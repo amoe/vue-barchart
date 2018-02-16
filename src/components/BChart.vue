@@ -9,7 +9,7 @@
       <rect v-for="(point, index) in points"
             :x="getX(point, index)"
             :y="getY(point, index)"
-            width="5"
+            :width="getWidth(point, index)"
             :height="getHeight(point)"
             fill="#F7941E"
             opacity="0.6"/>
@@ -28,23 +28,28 @@ import nouns from '../nouns';
 
 const height = 500;
 const scaleHeight = d3.scaleLinear().domain([0, 100]).range([0, 500]);
-const scaleX = d3.scaleBand()
 
 export default Vue.extend({
     data: function() {
         return {
-            points: []
+            points: [],
+            // xscale must be reset sometimes because it's a band scale
+            // so it needs to know what categories were used 'in practice'
+            xScale: null
         };
     },
     created() {
         this.generatePoints();
     },
     methods: {
+        getWidth(point, index) {
+            return this.xScale.bandwidth();
+        },
         getHeight(point) {
             return scaleHeight(point.y);
         },
         getX(point, index) {
-            return index * 10;
+            return this.xScale(point.x);
         },
         getY(point, index) {
             return height - scaleHeight(point.y);
@@ -52,6 +57,7 @@ export default Vue.extend({
         generatePoints() {
             const thisRun = _.shuffle(nouns);
             this.points = [];   // This is fine and will update DOM
+            const usedCategories = [];
             
             const nPoints = _.random(5, 50);
             
@@ -65,11 +71,22 @@ export default Vue.extend({
                     x: x, y: y
                 };
                 
+                usedCategories.push(x);
                 this.points.push(thisPoint);
              }
             
             console.log("points list is now %o", JSON.stringify(this.points));
+
+            this.resetBandScale(usedCategories);
          },
+
+        resetBandScale(categories) {
+            this.xScale = d3.scaleBand()
+              .domain(categories)
+              .range([0, 500])
+              .paddingInner(0.1)
+              .align(0.5);
+        },
          greet() {
              console.log("hello");
              console.log("state val is %o", this.$store.state.count);
