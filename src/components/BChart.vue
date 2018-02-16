@@ -26,12 +26,6 @@
             x1="0" y1="0"
             x2="0" :y2="dimensions.height"
             stroke="black" stroke-width="1"/>
-
-      <!-- font settings are default settings taken from d3-axis -->
-      <text v-for="category in domain"
-        x="0" :y="dimensions.height" 
-        font-size="10" font-family="sans-serif">Hello out there</text>
-      </g>
     </svg>
   </div>
 </div>
