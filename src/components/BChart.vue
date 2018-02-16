@@ -26,6 +26,7 @@
             x1="0" y1="0"
             x2="0" :y2="dimensions.height"
             stroke="black" stroke-width="1"/>
+      </g>
     </svg>
   </div>
 </div>
