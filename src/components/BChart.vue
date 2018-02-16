@@ -16,9 +16,11 @@
               opacity="0.6"/>
       </g>
 
-      <!--
-      <line x1="10" y1="10" x2="50" y2="50" stroke="black" stroke-width="1"/>
-      -->
+      x1=right
+      y1=height
+      x2=
+      y2=height
+      <line x1="10" y1="490" x2="490" y2="490" stroke="black" stroke-width="1"/>
     </svg>
   </div>
 </div>
@@ -113,7 +115,7 @@ export default Vue.extend({
         resetBandScale(categories) {
             this.xScale = d3.scaleBand()
               .domain(categories)
-              .range([0, 500])
+              .range([0, this.dimensions.width])
               .paddingInner(0.1)
               .align(0.5);
         },
