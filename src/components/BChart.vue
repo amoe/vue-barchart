@@ -35,6 +35,13 @@
             :dx="getXLabelOffset(index)"
             dy="0.4rem"
             fill="black">{{category}}</text>
+
+      <text v-for="n in nTicks"
+            :y="getYLabelOffset(n)"
+            x="0"
+            font-size="1rem"
+            dx="-4rem"
+            >Tick {{n}} foo</text>
       </g>
     </svg>
   </div>
@@ -52,8 +59,8 @@ import nouns from '../nouns';
 const margin = {
     top: 20,
     right: 20,
-    bottom: 200,
-    left: 20
+    bottom: 100,
+    left: 50
 };
 
 export default Vue.extend({
@@ -81,7 +88,8 @@ export default Vue.extend({
             // so it needs to know what categories were used 'in practice'
             xScale: null,
             heightScale,
-            dimensions
+            dimensions,
+            nTicks: 10
         };
     },
     created() {
@@ -89,6 +97,22 @@ export default Vue.extend({
         this.generatePoints();
     },
     methods: {
+        getYLabelOffset(n) {
+            console.log("received y label offset request");
+            
+            // It's more like we would probably just create a new scale to do this.
+
+            // Range here should be the same as the domain of the y-scale.
+            const intermediary = d3.scaleLinear()
+                  .domain([0, this.nTicks])
+                  .range([0, 100]);
+
+            const result = intermediary(n);
+
+            const realResult = this.heightScale(result);
+
+            return realResult;
+        },
         getWidth(point) {
             return this.xScale.bandwidth();
         },
@@ -161,6 +185,9 @@ export default Vue.extend({
          },
          marginTranslation() {
              return `translate(${margin.left}, ${margin.top})`;
+         },
+         suggestedTicks() {
+             return 10;
          }
      }
  });
