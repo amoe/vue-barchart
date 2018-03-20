@@ -2,7 +2,6 @@
 <div>
   <button v-on:click="generatePoints">Generate Points</button>
   
-  
   <div class="svg-container">
     <svg version="1.1" viewBox="0 0 500 500" 
          preserveAspectRatio="xMinYMin meet" class="svg-content">
@@ -26,6 +25,16 @@
             x1="0" y1="0"
             x2="0" :y2="dimensions.height"
             stroke="black" stroke-width="1"/>
+
+
+      <text v-for="(category, index) in domain"
+            class="x-label" 
+            x="0"
+            :y="dimensions.height"
+            font-size="1rem"
+            :dx="getXLabelOffset(index)"
+            dy="0.4rem"
+            fill="black">{{category}}</text>
       </g>
     </svg>
   </div>
@@ -41,10 +50,10 @@ import * as d3 from 'd3';
 import nouns from '../nouns';
 
 const margin = {
-    top: 10,
-    right: 10,
-    bottom: 10,
-    left: 10
+    top: 20,
+    right: 20,
+    bottom: 200,
+    left: 20
 };
 
 export default Vue.extend({
@@ -97,7 +106,7 @@ export default Vue.extend({
             this.points = [];   // This is fine and will update DOM
             const usedCategories = [];
             
-            const nPoints = _.random(5, 50);
+            const nPoints = _.random(5, 10);
             
             // In the case of bar data, x just represents an unlabelled 
             // 'category' so it's unused.
@@ -135,6 +144,16 @@ export default Vue.extend({
          doIncrement() {
              this.$store.dispatch('increment');
          },
+         getXLabelOffset(index) {
+             const s = this.xScale;
+
+             // See this diagram to see why this works:
+             // https://raw.githubusercontent.com/d3/d3-scale/master/img/band.png
+             const usedSpaceSoFar = s.step() * index;
+             const val = s.paddingOuter() + usedSpaceSoFar + (s.bandwidth() / 2);
+
+             return val;
+         }
      },
      computed: {
          domain() {
@@ -148,4 +167,7 @@ export default Vue.extend({
 </script>
 
 <style>
+text.x-label {
+    writing-mode: tb;
+}
 </style>
