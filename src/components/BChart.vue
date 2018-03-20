@@ -31,17 +31,17 @@
             class="x-label" 
             x="0"
             :y="dimensions.height"
-            font-size="1rem"
+            :font-size="labelFontSize"
             :dx="getXLabelOffset(index)"
-            dy="0.4rem"
+            :dy="xLabelOuterPadding"
             fill="black">{{category}}</text>
 
       <text v-for="n in nTicks"
             :y="getYLabelOffset(n)"
             x="0"
-            font-size="1rem"
-            dx="-2rem"
-            dy="0.5rem"
+            :font-size="labelFontSize"
+            :dx="yLabelOuterPadding"
+            :dy="yLabelVerticalOffset"
             >{{getYLabelText(n)}}</text>
       </g>
     </svg>
@@ -56,6 +56,19 @@ import utility from '../utility';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import nouns from '../nouns';
+
+const LABEL_FONT_SIZE = "1rem";
+
+// Gap between the x-axis and the x-label
+const X_LABEL_OUTER_PADDING = "0.4em";
+
+// Gap between the y-axis and the y-label.  Unfortunately this is somewhat
+// dependent on the length of the text of the y-labels, because SVG doesn't have
+// a box model.
+const Y_LABEL_OUTER_PADDING = "-2rem";
+
+// This setting will align the top of the highest y-label with the top of the y-axis.
+const Y_LABEL_VERTICAL_OFFSET = "0.5em";
 
 const margin = {
     top: 20,
@@ -90,7 +103,11 @@ export default Vue.extend({
             xScale: null,
             heightScale,
             dimensions,
-            nTicks: 10
+            nTicks: 10,
+            yLabelOuterPadding: Y_LABEL_OUTER_PADDING,
+            yLabelVerticalOffset: Y_LABEL_VERTICAL_OFFSET,
+            labelFontSize: LABEL_FONT_SIZE,
+            xLabelOuterPadding: X_LABEL_OUTER_PADDING
         };
     },
     created() {

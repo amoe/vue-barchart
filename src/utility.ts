@@ -18,7 +18,8 @@ const functions = {
             console.log('Error', error.message);
         }
         console.log(error.config);
-    }
+    },
+    message: 42
 };
 
 export default functions;
