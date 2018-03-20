@@ -44,7 +44,7 @@
             :font-size="labelFontSize"
             :dx="yLabelOuterPadding"
             :dy="yLabelVerticalOffset"
-            >{{getYLabelText(n)}}</text>
+            text-anchor="end">{{getYLabelText(n)}}</text>
       </g>
     </svg>
   </div>
@@ -67,7 +67,7 @@ const X_LABEL_OUTER_PADDING = "0.4em";
 // Gap between the y-axis and the y-label.  Unfortunately this is somewhat
 // dependent on the length of the text of the y-labels, because SVG doesn't have
 // a box model.
-const Y_LABEL_OUTER_PADDING = "-2rem";
+const Y_LABEL_OUTER_PADDING = "-0.4rem";
 
 // This setting will align the top of the highest y-label with the top of the y-axis.
 const Y_LABEL_VERTICAL_OFFSET = "0.5em";
