@@ -40,8 +40,9 @@
             :y="getYLabelOffset(n)"
             x="0"
             font-size="1rem"
-            dx="-4rem"
-            >Tick {{n}} foo</text>
+            dx="-2rem"
+            dy="0.5rem"
+            >{{getYLabelText(n)}}</text>
       </g>
     </svg>
   </div>
@@ -97,21 +98,31 @@ export default Vue.extend({
         this.generatePoints();
     },
     methods: {
-        getYLabelOffset(n) {
-            console.log("received y label offset request");
-            
-            // It's more like we would probably just create a new scale to do this.
-
-            // Range here should be the same as the domain of the y-scale.
-            const intermediary = d3.scaleLinear()
-                  .domain([0, this.nTicks])
-                  .range([0, 100]);
+        getYLabelText(n) {
+            const intermediary = this.getIntermediaryScale();
 
             const result = intermediary(n);
 
-            const realResult = this.heightScale(result);
+            // Y label text is just the stringified result.
+            return result;
+        },
+        getYLabelOffset(n) {
+            // It's more like we would probably just create a new scale to do this.
+
+            // Range here should be the same as the domain of the y-scale.
+            const intermediary = this.getIntermediaryScale();
+
+            const result = intermediary(n);
+
+            const realResult = this.dimensions.height - this.heightScale(result);
 
             return realResult;
+        },
+
+        getIntermediaryScale() {
+            return d3.scaleLinear()
+                  .domain([0, this.nTicks])
+                  .range([0, 100]);
         },
         getWidth(point) {
             return this.xScale.bandwidth();
@@ -136,7 +147,7 @@ export default Vue.extend({
             // 'category' so it's unused.
             for (let i = 0; i < nPoints; i++) {
                 const x = thisRun[i];
-                const y = _.random(0, 100);
+                const y = _.random(0, 50);
                 
                 const thisPoint = {
                     x: x, y: y
@@ -147,6 +158,8 @@ export default Vue.extend({
              }
             
             this.resetBandScale(this.domain);
+
+            console.log("points generated were: %o", JSON.stringify(this.points));
          },
 
         resetBandScale(categories) {
