@@ -7,6 +7,7 @@
          preserveAspectRatio="xMinYMin meet" class="svg-content">
       <g :transform="marginTranslation">
         <rect v-for="point in points"
+              v-on:click="onBarClicked"
               :x="getX(point)"
               :y="getY(point)"
               :width="getWidth(point)"
@@ -28,6 +29,7 @@
 
 
       <text v-for="(category, index) in domain"
+            v-on:click="onXLabelClicked(category)"
             class="x-label" 
             x="0"
             :y="dimensions.height"
@@ -207,6 +209,12 @@ export default Vue.extend({
              const val = s.paddingOuter() + usedSpaceSoFar + (s.bandwidth() / 2);
 
              return val;
+         },
+         onBarClicked() {
+             console.log("bar was clicked");
+         },
+         onXLabelClicked(category) {
+             console.log("x-label was clicked, the category was %o", category);
          }
      },
      computed: {
@@ -215,9 +223,6 @@ export default Vue.extend({
          },
          marginTranslation() {
              return `translate(${margin.left}, ${margin.top})`;
-         },
-         suggestedTicks() {
-             return 10;
          }
      }
  });
@@ -226,5 +231,10 @@ export default Vue.extend({
 <style>
 text.x-label {
     writing-mode: tb;
+    cursor: pointer;
+}
+
+text.x-label:hover {
+    fill: #a0a0a0;
 }
 </style>
