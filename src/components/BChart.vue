@@ -8,12 +8,16 @@
       <g :transform="marginTranslation">
         <rect v-for="point in points"
               v-on:click="onBarClicked"
+              v-on:mouseover="showDetailTooltip"
               :x="getX(point)"
               :y="getY(point)"
               :width="getWidth(point)"
               :height="getHeight(point)"
               fill="#ff5f00"
-              opacity="0.6"/>
+              opacity="0.6">
+          <title>Value: {{point.y}}</title>
+        </rect>
+
 
       <line id="x-axis"
             x1="0"
@@ -215,6 +219,9 @@ export default Vue.extend({
          },
          onXLabelClicked(category) {
              console.log("x-label was clicked, the category was %o", category);
+         },
+         showDetailTooltip() {
+             console.log("showing the detail tooltip");
          }
      },
      computed: {
