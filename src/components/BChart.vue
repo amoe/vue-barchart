@@ -1,7 +1,5 @@
 <template>
 <div>
-  <button v-on:click="generatePoints">Generate Points</button>
-  
   <div class="svg-container">
     <svg version="1.1" viewBox="0 0 500 500" 
          preserveAspectRatio="xMinYMin meet" class="svg-content">
@@ -59,9 +57,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import utility from '../utility';
-import * as _ from 'lodash';
 import * as d3 from 'd3';
-import nouns from '../nouns';
 
 const LABEL_FONT_SIZE = "1rem";
 
@@ -93,6 +89,14 @@ export default Vue.extend({
             type: Number,
             required: true
         },
+        'points': {
+            type: Array,
+            required: true
+        },
+
+    },
+    created() {
+        console.log("margin translation expr is %o", this.marginTranslation);
     },
     data: function() {
         const dimensions = {
@@ -103,7 +107,6 @@ export default Vue.extend({
         const heightScale = d3.scaleLinear().domain([0, 100]).range([0, dimensions.height]);
         
         return {
-            points: [],
             heightScale,
             dimensions,
             nTicks: 10,
@@ -115,7 +118,6 @@ export default Vue.extend({
     },
     created() {
         console.log("margin translation expr is %o", this.marginTranslation);
-        this.generatePoints();
     },
     methods: {
         getYLabelText(n) {
@@ -156,29 +158,6 @@ export default Vue.extend({
         getY(point) {
             return this.dimensions.height - this.heightScale(point.y);
         },
-        generatePoints() {
-            const thisRun = _.shuffle(nouns);
-            this.points = [];   // This is fine and will update DOM
-            const usedCategories = [];
-            
-            const nPoints = _.random(5, 10);
-            
-            // In the case of bar data, x just represents an unlabelled 
-            // 'category' so it's unused.
-            for (let i = 0; i < nPoints; i++) {
-                const x = thisRun[i];
-                const y = _.random(0, 50);
-                
-                const thisPoint = {
-                    x: x, y: y
-                };
-                
-                usedCategories.push(x);
-                this.points.push(thisPoint);
-             }
-            
-            console.log("points generated were: %o", JSON.stringify(this.points));
-         },
          greet() {
              console.log("hello");
              console.log("state val is %o", this.$store.state.count);
