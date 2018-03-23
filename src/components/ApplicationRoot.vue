@@ -71,8 +71,6 @@ export default Vue.extend({
                 const x = thisRun[i];
                 const y = _.random(0, 50);
                 
-                console.log("value of x is %o", x);
-
                 const thisPoint = {
                     x: x, y: y
                 };
