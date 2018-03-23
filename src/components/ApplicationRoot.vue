@@ -7,9 +7,14 @@
   <button v-on:click="greet">Greet</button>
   <button v-on:click="doIncrement">Inc</button>
 
+  <button v-on:click="generatePoints">Generate Points</button>
+
+
   <!-- <div v-axis="value"></div> -->
 
-  <b-chart :outer-width="width" :outer-height="height"></b-chart>
+  <b-chart :outer-width="width" 
+           :outer-height="height"
+           :points="points"></b-chart>
 </div>
 </template>
 
@@ -21,11 +26,13 @@ import * as _ from 'lodash';
 import * as d3 from 'd3';
 import BChart from './BChart.vue';
 import directives from '../directives';
+import * as nouns from '../nouns';
 
 export default Vue.extend({
     components: { BChart },
     data: function() {
         return {
+            points: [],
             value: 42,
             // Because these are specified to be numbers, they must be declared
             // inside data.
@@ -36,6 +43,10 @@ export default Vue.extend({
     directives: {
         axis: directives.axis
     },
+    created() {
+        this.generatePoints();
+        console.log("noun list: %o", nouns);
+    },
     methods: {
          greet() {
              console.log("hello");
@@ -44,6 +55,32 @@ export default Vue.extend({
          doIncrement() {
              this.$store.dispatch('increment');
          },
+        generatePoints() {
+            const thisRun = _.shuffle(nouns);
+
+            console.log("nouns are %o", nouns);
+
+            this.points = [];   // This is fine and will update DOM
+            const usedCategories = [];
+            
+            const nPoints = _.random(5, 10);
+            
+            // In the case of bar data, x just represents an unlabelled 
+            // 'category' so it's unused.
+            for (let i = 0; i < nPoints; i++) {
+                const x = thisRun[i];
+                const y = _.random(0, 50);
+                
+                const thisPoint = {
+                    x: x, y: y
+                };
+                
+                usedCategories.push(x);
+                this.points.push(thisPoint);
+             }
+            
+            console.log("points generated were: %o", JSON.stringify(this.points));
+         }
      },
      computed: {
          count: function (this: any) {
