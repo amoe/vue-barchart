@@ -104,9 +104,6 @@ export default Vue.extend({
         
         return {
             points: [],
-            // xscale must be reset sometimes because it's a band scale
-            // so it needs to know what categories were used 'in practice'
-            xScale: null,
             heightScale,
             dimensions,
             nTicks: 10,
@@ -180,23 +177,8 @@ export default Vue.extend({
                 this.points.push(thisPoint);
              }
             
-            this.resetBandScale(this.domain);
-
             console.log("points generated were: %o", JSON.stringify(this.points));
          },
-
-        resetBandScale(categories) {
-            this.xScale = d3.scaleBand()
-              .domain(categories)
-              .range([0, this.dimensions.width])
-              .paddingInner(0.1)
-              .align(0.5);
-
-            console.log("band scale is %o", this.xScale);
-
-            // When scale has no ticks, the ticks are just the domain.  (because ordinal scale.)
-            console.log("ticks value is %o", this.domain);
-        },
          greet() {
              console.log("hello");
              console.log("state val is %o", this.$store.state.count);
@@ -230,6 +212,15 @@ export default Vue.extend({
          },
          marginTranslation() {
              return `translate(${margin.left}, ${margin.top})`;
+         },
+         // Bandscale has to be recomputed when the data changes; this is
+         // transitively depending on the computed property 'domain' as above.
+         xScale() {
+             return d3.scaleBand()
+                      .domain(this.domain)
+                      .range([0, this.dimensions.width])
+                      .paddingInner(0.1)
+                      .align(0.5);
          }
      }
  });
