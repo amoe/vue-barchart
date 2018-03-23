@@ -1,25 +1,15 @@
 const functions = {
-    // This is taken from the Axios docs.  Should be ported to loglevel
-    handleAxiosError(error) {
-        if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser
-            // and an instance of http.ClientRequest in node.js
-            console.log(error.request);
-        } else {
-            // Something happened in setting up the request that triggered an 
-            // Error
-            console.log('Error', error.message);
-        }
-        console.log(error.config);
-    },
-    message: 42
+    generateTicks(min: number, max: number, nTicks: number) {
+        const sizeOfRange = max - min;
+        const roundTo = sizeOfRange / nTicks;
+
+        const realMin = floorN(min, roundTo);
+        const realMax = ceilingN(max, roundTo);
+        
+        const step = (realMax  - realMin) / nTicks;
+
+        return _.range(1, nTicks).map(n => realMin + (step * n));
+    }
 };
 
 export default functions;
