@@ -40,13 +40,14 @@
             :dy="xLabelOuterPadding"
             fill="black">{{category}}</text>
 
+      <!-- This loop is 1-based -->
       <text v-for="n in nTicks"
             :y="getYLabelOffset(n)"
             x="0"
             :font-size="labelFontSize"
             :dx="yLabelOuterPadding"
             :dy="yLabelVerticalOffset"
-            text-anchor="end">{{getYLabelText(n)}}</text>
+            text-anchor="end">{{getYLabelText(n - 1)}}</text>
       </g>
     </svg>
   </div>
@@ -121,12 +122,9 @@ export default Vue.extend({
     },
     methods: {
         getYLabelText(n) {
-            const intermediary = this.getIntermediaryScale();
-
-            const result = intermediary(n);
-
-            // Y label text is just the stringified result.
-            return result;
+            console.log("yticks is %o", this.yTicks);
+            console.log("requested n as %o", n);
+            return this.yTicks[n]
         },
         getYLabelOffset(n) {
             // It's more like we would probably just create a new scale to do this.
@@ -211,7 +209,7 @@ export default Vue.extend({
              return d3.scaleLinear().domain([0, this.yMax]).range([0, this.dimensions.height]);
          },
          yTicks() {
-             return utility.generateTicks(this.yMin, this.yMax, 10);
+             return utility.generateTicks(0, this.yMax, 10);
          }
      }
  });
