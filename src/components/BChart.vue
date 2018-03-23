@@ -58,6 +58,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
+import _ from 'lodash';
 
 const LABEL_FONT_SIZE = "1rem";
 
@@ -104,10 +105,9 @@ export default Vue.extend({
             height: this.outerHeight - margin.top - margin.bottom
         };
 
-        const heightScale = d3.scaleLinear().domain([0, 100]).range([0, dimensions.height]);
+
         
         return {
-            heightScale,
             dimensions,
             nTicks: 10,
             yLabelOuterPadding: Y_LABEL_OUTER_PADDING,
@@ -118,6 +118,7 @@ export default Vue.extend({
     },
     created() {
         console.log("margin translation expr is %o", this.marginTranslation);
+        console.log("ymax is %o", this.yMax);
     },
     methods: {
         getYLabelText(n) {
@@ -144,7 +145,7 @@ export default Vue.extend({
         getIntermediaryScale() {
             return d3.scaleLinear()
                   .domain([0, this.nTicks])
-                  .range([0, 100]);
+                  .range([0, this.yMax]);
         },
         getWidth(point) {
             return this.xScale.bandwidth();
@@ -200,6 +201,12 @@ export default Vue.extend({
                       .range([0, this.dimensions.width])
                       .paddingInner(0.1)
                       .align(0.5);
+         },
+         yMax() {
+             return _.max(this.points.map(point => point.y));
+         },
+         heightScale() {
+             return d3.scaleLinear().domain([0, this.yMax]).range([0, this.dimensions.height]);
          }
      }
  });
