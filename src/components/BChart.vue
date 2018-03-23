@@ -104,9 +104,6 @@ export default Vue.extend({
             width: this.outerWidth - margin.left - margin.right,
             height: this.outerHeight - margin.top - margin.bottom
         };
-
-
-        
         return {
             dimensions,
             nTicks: 10,
@@ -119,6 +116,8 @@ export default Vue.extend({
     created() {
         console.log("margin translation expr is %o", this.marginTranslation);
         console.log("ymax is %o", this.yMax);
+        console.log("ymax is %o", this.yMin);
+        console.log("ticks are %o", this.yTicks);
     },
     methods: {
         getYLabelText(n) {
@@ -205,8 +204,14 @@ export default Vue.extend({
          yMax() {
              return _.max(this.points.map(point => point.y));
          },
+         yMin() {
+             return _.min(this.points.map(point => point.y));
+         },
          heightScale() {
              return d3.scaleLinear().domain([0, this.yMax]).range([0, this.dimensions.height]);
+         },
+         yTicks() {
+             return utility.generateTicks(this.yMin, this.yMax, 10);
          }
      }
  });
