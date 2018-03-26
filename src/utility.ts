@@ -43,7 +43,8 @@ const functions = {
         log.debug("step was %o", step);
 
         return _.range(1, nTicks).map(n => adjustedBounds.min + (step * n));
-    }
+    },
+    getAdjustedBounds
 };
 
 export default functions;

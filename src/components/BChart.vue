@@ -207,8 +207,11 @@ export default Vue.extend({
          yMin() {
              return _.min(this.points.map(point => point.y));
          },
+         adjustedBounds() {
+             return utility.getAdjustedBounds(this.yMin, this.yMax);
+         },
          heightScale() {
-             return d3.scaleLinear().domain([0, this.yMax]).range([0, this.dimensions.height]);
+             return d3.scaleLinear().domain([0, this.adjustedBounds.max]).range([0, this.dimensions.height]);
          },
          yTicks() {
              return utility.generateTicks(0, this.yMax, 10);
