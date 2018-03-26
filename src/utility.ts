@@ -17,21 +17,32 @@ function getRoundingTarget(max: number) {
     return Math.pow(10, Math.floor(log10(max)));
 }
 
+function getAdjustedBounds(min, max) {
+    const sizeOfRange = max - min;
+    const roundTo = getRoundingTarget(max);
+
+    const adjustedMin = floorN(min, roundTo);
+    const adjustedMax = ceilingN(max, roundTo);
+
+    return {
+        min: adjustedMin,
+        max: adjustedMax
+    };
+}
+
+
 const functions = {
     generateTicks(min: number, max: number, nTicks: number) {
-        const sizeOfRange = max - min;
-        const roundTo = getRoundingTarget(max);
+      
+        const adjustedBounds = getAdjustedBounds(min, max);
+  
+        const step = (adjustedBounds.max  - adjustedBounds.min) / nTicks;
 
-        const realMin = floorN(min, roundTo);
-        const realMax = ceilingN(max, roundTo);
-        
-        const step = (realMax  - realMin) / nTicks;
-
-        log.debug("real min was %o", realMin);
-        log.debug("real max was %o", realMax);
+        log.debug("adjusted min was %o", adjustedBounds.min);
+        log.debug("adjusted max was %o", adjustedBounds.max);
         log.debug("step was %o", step);
 
-        return _.range(1, nTicks).map(n => realMin + (step * n));
+        return _.range(1, nTicks).map(n => adjustedBounds.min + (step * n));
     }
 };
 
