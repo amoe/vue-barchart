@@ -14,7 +14,7 @@ function floorN(x: number, n: number) {
 }
 
 function getRoundingTarget(max: number) {
-    return Math.pow(10, Math.floor(log10(max)));
+    return Math.pow(10, Math.floor(log10(max * 0.01)));
 }
 
 function getAdjustedBounds(min, max) {
@@ -42,7 +42,7 @@ const functions = {
         log.debug("adjusted max was %o", adjustedBounds.max);
         log.debug("step was %o", step);
 
-        return _.range(1, nTicks).map(n => adjustedBounds.min + (step * n));
+        return _.range(1, nTicks + 1).map(n => adjustedBounds.min + (step * n));
     },
     getAdjustedBounds
 };
