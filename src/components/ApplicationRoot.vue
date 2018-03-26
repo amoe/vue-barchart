@@ -44,8 +44,8 @@ export default Vue.extend({
         axis: directives.axis
     },
     created() {
-        this.generatePoints();
-        console.log("noun list: %o", nouns);
+//        this.generatePoints();
+//        console.log("noun list: %o", nouns);
     },
     methods: {
          greet() {

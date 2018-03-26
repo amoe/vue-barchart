@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as log from 'loglevel';
 
 function log10(val) {
   return Math.log(val) / Math.LN10;
@@ -26,9 +27,9 @@ const functions = {
         
         const step = (realMax  - realMin) / nTicks;
 
-        console.log("real min was %o", realMin);
-        console.log("real max was %o", realMax);
-        console.log("step was %o", step);
+        log.debug("real min was %o", realMin);
+        log.debug("real max was %o", realMax);
+        log.debug("step was %o", step);
 
         return _.range(1, nTicks).map(n => realMin + (step * n));
     }

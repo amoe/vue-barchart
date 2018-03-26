@@ -60,6 +60,7 @@ import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
 import _ from 'lodash';
+import * as log from 'loglevel';
 
 const LABEL_FONT_SIZE = "1rem";
 
@@ -98,7 +99,7 @@ export default Vue.extend({
 
     },
     created() {
-        console.log("margin translation expr is %o", this.marginTranslation);
+        log.debug("margin translation expr is %o", this.marginTranslation);
     },
     data: function() {
         const dimensions = {
@@ -115,27 +116,28 @@ export default Vue.extend({
         };
     },
     created() {
-        console.log("margin translation expr is %o", this.marginTranslation);
-        console.log("ymax is %o", this.yMax);
-        console.log("ymax is %o", this.yMin);
-        console.log("ticks are %o", this.yTicks);
+        log.debug("margin translation expr is %o", this.marginTranslation);
+        log.debug("ymax is %o", this.yMax);
+        log.debug("ymax is %o", this.yMin);
+        log.debug("ticks are %o", this.yTicks);
     },
     methods: {
         getYLabelText(n) {
-            console.log("yticks is %o", this.yTicks);
-            console.log("requested n as %o", n);
+            log.debug("yticks is %o", this.yTicks);
+            log.debug("requested n as %o", n);
             return this.yTicks[n]
         },
         getYLabelOffset(n) {
             // It's more like we would probably just create a new scale to do this.
-
             // Range here should be the same as the domain of the y-scale.
+
+            if (!this.points.length) {
+                return 0;
+            }
+
             const intermediary = this.getIntermediaryScale();
-
             const result = intermediary(n);
-
             const realResult = this.dimensions.height - this.heightScale(result);
-
             return realResult;
         },
 
@@ -157,8 +159,8 @@ export default Vue.extend({
             return this.dimensions.height - this.heightScale(point.y);
         },
          greet() {
-             console.log("hello");
-             console.log("state val is %o", this.$store.state.count);
+             log.debug("hello");
+             log.debug("state val is %o", this.$store.state.count);
          },
          doIncrement() {
              this.$store.dispatch('increment');
@@ -174,13 +176,13 @@ export default Vue.extend({
              return val;
          },
          onBarClicked() {
-             console.log("bar was clicked");
+             log.debug("bar was clicked");
          },
          onXLabelClicked(category) {
-             console.log("x-label was clicked, the category was %o", category);
+             log.debug("x-label was clicked, the category was %o", category);
          },
          showDetailTooltip() {
-             console.log("showing the detail tooltip");
+             log.debug("showing the detail tooltip");
          }
      },
      computed: {

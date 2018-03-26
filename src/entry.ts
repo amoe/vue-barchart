@@ -48,3 +48,4 @@ document.addEventListener("DOMContentLoaded", e => {
     });
     vueInstance.$mount('#vue-outlet');
 });
+
