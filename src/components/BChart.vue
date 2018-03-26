@@ -144,7 +144,7 @@ export default Vue.extend({
         getIntermediaryScale() {
             return d3.scaleLinear()
                   .domain([0, this.nTicks])
-                  .range([0, this.yMax]);
+                  .range([0, this.adjustedBounds.max]);
         },
         getWidth(point) {
             return this.xScale.bandwidth();
