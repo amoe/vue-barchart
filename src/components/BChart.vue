@@ -71,7 +71,9 @@ const X_LABEL_OUTER_PADDING = "0.4em";
 // Gap between the y-axis and the y-label.  Unfortunately this is somewhat
 // dependent on the length of the text of the y-labels, because SVG doesn't have
 // a box model.
-const Y_LABEL_OUTER_PADDING = "-0.4rem";
+// Using em because Firefox doesn't support rem in SVG for some reason, at least
+// FF52 doesn't lay this text out properly with rem.
+const Y_LABEL_OUTER_PADDING = "-0.4em";
 
 // This setting will align the top of the highest y-label with the top of the y-axis.
 const Y_LABEL_VERTICAL_OFFSET = "0.5em";
