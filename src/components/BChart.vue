@@ -129,8 +129,12 @@ export default Vue.extend({
 
             const thisTickValue = this.yTicks[n];
 
+            // This is half-way between a magic number and something that's
+            // an innate constant, being-as-it-is the base of our number system.
             if (this.adjustedBounds.max > 10) {
-                return thisTickValue;
+                // We're flat out truncating non-integer values in this case,
+                // because we just DGAF.
+                return sprintf("%.0f", thisTickValue);
             } else {
                 return sprintf("%.2f", thisTickValue);
             }
