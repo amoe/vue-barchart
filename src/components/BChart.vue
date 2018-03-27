@@ -38,7 +38,7 @@
             :font-size="labelFontSize"
             :dx="getXLabelOffset(index)"
             :dy="xLabelOuterPadding"
-            fill="black">{{category}}</text>
+            fill="black"><title>{{category}}</title>{{category}}</text>
 
       <!-- This loop is 1-based -->
       <text v-for="n in nTicks"
@@ -170,13 +170,6 @@ export default Vue.extend({
         getY(point) {
             return this.dimensions.height - this.heightScale(point.y);
         },
-         greet() {
-             log.debug("hello");
-             log.debug("state val is %o", this.$store.state.count);
-         },
-         doIncrement() {
-             this.$store.dispatch('increment');
-         },
          getXLabelOffset(index) {
              const s = this.xScale;
 
@@ -234,7 +227,7 @@ export default Vue.extend({
 
 <style>
 text.x-label {
-    writing-mode: tb;
+    writing-mode: tb;   /* Write labels top-to-bottom! */
     cursor: pointer;
 }
 
