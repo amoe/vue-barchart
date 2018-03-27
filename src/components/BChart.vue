@@ -61,6 +61,7 @@ import utility from '../utility';
 import * as d3 from 'd3';
 import _ from 'lodash';
 import * as log from 'loglevel';
+import {sprintf} from 'sprintf-js';
 
 const LABEL_FONT_SIZE = "1rem";
 
@@ -125,7 +126,14 @@ export default Vue.extend({
         getYLabelText(n) {
             log.debug("yticks is %o", this.yTicks);
             log.debug("requested n as %o", n);
-            return this.yTicks[n]
+
+            const thisTickValue = this.yTicks[n];
+
+            if (this.adjustedBounds.max > 10) {
+                return thisTickValue;
+            } else {
+                return sprintf("%.2f", thisTickValue);
+            }
         },
         getYLabelOffset(n) {
             // It's more like we would probably just create a new scale to do this.
