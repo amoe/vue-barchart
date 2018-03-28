@@ -187,6 +187,7 @@ export default Vue.extend({
          },
          onXLabelClicked(category) {
              log.debug("x-label was clicked, the category was %o", category);
+             this.$emit('x-label-clicked', category);
          },
          showDetailTooltip() {
              log.debug("showing the detail tooltip");

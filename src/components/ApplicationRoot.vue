@@ -14,7 +14,8 @@
 
   <b-chart :outer-width="width" 
            :outer-height="height"
-           :points="points"></b-chart>
+           :points="points"
+           v-on:x-label-clicked="onXLabelClicked"></b-chart>
 </div>
 </template>
 
@@ -48,6 +49,9 @@ export default Vue.extend({
        console.log("noun list: %o", nouns);
     },
     methods: {
+        onXLabelClicked(category) {
+            console.log("handling x label clicked in parent, arguments are %o", category);
+        },
          greet() {
              console.log("hello");
              console.log("state val is %o", this.$store.state.count);
